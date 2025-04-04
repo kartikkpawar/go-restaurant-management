@@ -97,7 +97,7 @@ func UpdateOrder() gin.HandlerFunc {
 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 		var table models.Table
 		var order models.Order
-		var updatedObj primitive.D
+		var updateObj primitive.D
 
 		orderId := c.Param("orderId")
 		if err := c.BindJSON(&order); err != nil {
@@ -112,9 +112,9 @@ func UpdateOrder() gin.HandlerFunc {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Menu not found"})
 				return
 			}
-			updatedObj = append(updatedObj, bson.E{"menu_id", order.TableId})
+			updateObj = append(updateObj, bson.E{"menu_id", order.TableId})
 			order.UpdatedAt, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-			updatedObj = append(updatedObj, bson.E{"created_at", order.UpdatedAt})
+			updateObj = append(updateObj, bson.E{"created_at", order.UpdatedAt})
 
 			upsert := true
 			filter := bson.M{"order_id": orderId}
@@ -127,7 +127,7 @@ func UpdateOrder() gin.HandlerFunc {
 				filter,
 				bson.D{
 					{
-						"$set", updatedObj,
+						"$set", updateObj,
 					},
 				},
 				&opts,

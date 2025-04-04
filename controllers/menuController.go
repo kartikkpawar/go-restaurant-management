@@ -99,7 +99,7 @@ func UpdateMenu() gin.HandlerFunc {
 		}
 
 		filter := bson.M{"menu_id": menuId}
-		var updatedObj primitive.D
+		var updateObj primitive.D
 
 		if menu.StartDate != nil && menu.EndDate != nil {
 			if !inTimeStamp(*menu.StartDate, *menu.EndDate, time.Now()) {
@@ -109,18 +109,18 @@ func UpdateMenu() gin.HandlerFunc {
 				return
 			}
 		}
-		updatedObj = append(updatedObj, bson.E{"start_date", menu.StartDate})
-		updatedObj = append(updatedObj, bson.E{"end_date", menu.EndDate})
+		updateObj = append(updateObj, bson.E{"start_date", menu.StartDate})
+		updateObj = append(updateObj, bson.E{"end_date", menu.EndDate})
 
 		if menu.Name != "" {
-			updatedObj = append(updatedObj, bson.E{"name", menu.Name})
+			updateObj = append(updateObj, bson.E{"name", menu.Name})
 		}
 		if menu.Category != "" {
-			updatedObj = append(updatedObj, bson.E{"category", menu.Category})
+			updateObj = append(updateObj, bson.E{"category", menu.Category})
 		}
 
 		menu.UpdatedAt, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-		updatedObj = append(updatedObj, bson.E{"created_at", menu.UpdatedAt})
+		updateObj = append(updateObj, bson.E{"created_at", menu.UpdatedAt})
 
 		upsert := true
 
@@ -131,7 +131,7 @@ func UpdateMenu() gin.HandlerFunc {
 			ctx,
 			filter,
 			bson.D{
-				{"$set", updatedObj},
+				{"$set", updateObj},
 			},
 			&opt,
 		)
