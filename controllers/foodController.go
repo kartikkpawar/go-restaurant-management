@@ -102,12 +102,12 @@ func CreateFood() gin.HandlerFunc {
 			return
 		}
 
-		err := menuCollection.FindOne(ctx, bson.M{"menu_id": food.MenuId}).Decode(&menu)
+		err := menuCollection.FindOne(ctx, bson.M{"menu_id": &food.MenuId}).Decode(&menu)
 
 		defer cancel()
 
 		if err != nil {
-			msg := fmt.Sprintf("Error was not found")
+			msg := fmt.Sprintf("menu was not found")
 			c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
 			return
 		}
