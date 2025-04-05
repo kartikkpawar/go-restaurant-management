@@ -7,13 +7,18 @@ import (
 	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func DBinstance() *mongo.Client {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	mongoDbUri := os.Getenv("MONGODB_URI")
-
+	log.Print(os.Getenv("MONGODB_URI"), "MONGODB_URI")
 	if mongoDbUri == "" {
 		log.Fatal("DB connection url not present")
 	}

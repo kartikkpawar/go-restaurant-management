@@ -106,7 +106,7 @@ func SignUp() gin.HandlerFunc {
 
 		if err != nil {
 			log.Panic(err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "error occured whilce checking for email"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error occured while checking for email"})
 			return
 		}
 
@@ -118,12 +118,12 @@ func SignUp() gin.HandlerFunc {
 
 		if err != nil {
 			log.Panic(err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "error occured whilce checking for phone"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error occured while checking for phone"})
 			return
 		}
 
 		if count > 0 {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "error occured whilce checking for phone or email"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error occured while checking for phone or email"})
 			return
 		}
 
@@ -157,7 +157,7 @@ func Login() gin.HandlerFunc {
 
 		var foundUser models.User
 
-		if err := c.BindJSON(&foundUser); err != nil {
+		if err := c.BindJSON(&user); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
